@@ -19,7 +19,7 @@ func SignUpUser(w http.ResponseWriter, r *http.Request) {
 	contactNumber := r.FormValue("contact_number")
 
 	if username == "" {
-		db.RespondJSON(w, "Please enter user name", utils.STATUFAILS, nil)
+		db.RespondJSON(w, "Please enter username", utils.STATUFAILS, nil)
 		return
 	}
 
@@ -38,14 +38,14 @@ func SignUpUser(w http.ResponseWriter, r *http.Request) {
 	err := userdb.Find(bson.M{"contact_number": contactNumber}).One(&userRs)
 
 	if err == nil {
-		db.RespondJSON(w, "Contact number alrady exited", utils.STATUFAILS, nil)
+		db.RespondJSON(w, "Contact number alrady exist", utils.STATUFAILS, nil)
 		return
 	}
 
 	err = userdb.Find(bson.M{"email_address": emailAddress}).One(&userRs)
 
 	if err == nil {
-		db.RespondJSON(w, "Email address alrady exited", utils.STATUFAILS, nil)
+		db.RespondJSON(w, "Email address alrady exist", utils.STATUFAILS, nil)
 		return
 	}
 
@@ -54,7 +54,7 @@ func SignUpUser(w http.ResponseWriter, r *http.Request) {
 		ContactNumber: contactNumber})
 
 	if err != nil {
-		db.RespondJSON(w, "Something went wrong please try again", utils.STATUFAILS, nil)
+		db.RespondJSON(w, "Something went wrong, please try again", utils.STATUFAILS, nil)
 	} else {
 		var userRS model.UserModelID
 		err = userdb.Find(bson.M{"contact_number": contactNumber}).One(&userRS)
@@ -65,7 +65,7 @@ func SignUpUser(w http.ResponseWriter, r *http.Request) {
 
 		err = userdb.Find(bson.M{"contact_number": contactNumber}).One(&userRS)
 
-		db.RespondJSON(w, "Create user successfuly", utils.STATUSSUCESS, userRS)
+		db.RespondJSON(w, "User created successfuly", utils.STATUSSUCESS, userRS)
 	}
 
 }
